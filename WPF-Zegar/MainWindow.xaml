@@ -1,0 +1,72 @@
+﻿<Window x:Class="WPF_Zegar.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mw="clr-namespace:WPF_Zegar.ModelWidoku"
+        xmlns:local="clr-namespace:WPF_Zegar"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Background="Transparent"
+        Opacity="0.75" AllowsTransparency="True" WindowStyle="None"
+        Title="ZegarWPF" Height="550" Width="500" ResizeMode="NoResize">
+    <Window.DataContext>
+        <mw:Zegar/>
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Line">
+            <Setter Property="Stroke" Value="black"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+        </Style>
+        <local:KonwerteryKątaWskazówki Wskazówka="Godzinowa" x:Key="wskazówkaGodzinowa"/>
+        <local:KonwerteryKątaWskazówki Wskazówka="Minutoowa" x:Key="wskazówkaMinutowa"/>
+        <local:KonwerteryKątaWskazówki Wskazówka="Sekundowa" x:Key="wskazówkaSekundowa"/>
+    </Window.Resources>
+    <i:Interaction.Behaviors>
+        <local:PrzesuwanieOkna/>
+    </i:Interaction.Behaviors>
+    <Canvas>
+        <Ellipse Canvas.Left="50" Canvas.Top="15" Height="400" Width="400" StrokeThickness="2" Stroke="Black">
+            <Ellipse.Fill>
+                <RadialGradientBrush GradientOrigin="0.5,0.5">
+                    <GradientStop Offset="1" Color="#DDDDDD"/>
+                    <GradientStop Offset="0.75" Color="#EEEEEE"/>
+                    <GradientStop Offset="0" Color="#FFFFFF"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        <TextBlock FontSize="30" Canvas.Left="145" Canvas.Top="245" Foreground="#888888"
+                       Text="{Binding Path=AktualnyCzas, Mode=OneWay, StringFormat={}{0:dd MMMM yyyy}, ConverterCulture=pl-PL}"/>
+        <TextBlock FontSize="40" Canvas.Left="180" Canvas.Top="275" Foreground="#888888"
+                       Text="{Binding Path=AktualnyCzas, Mode=OneWay, StringFormat={}{0:hh:mm:ss}}"/>
+        <TextBlock Text="12" FontSize="75" Foreground="DarkGray" Canvas.Left="210" Canvas.Top="10"/>
+        <TextBlock Text="9" FontSize="75" Foreground="DarkGray" Canvas.Left="70" Canvas.Top="165"/>
+        <TextBlock Text="3" FontSize="75" Foreground="DarkGray" Canvas.Left="390" Canvas.Top="165"/>
+        <TextBlock Text="6" FontSize="75" Foreground="DarkGray" Canvas.Left="230" Canvas.Top="325"/>
+        <Line Canvas.Left="250" Canvas.Top="210" StrokeThickness="4" X1="0" Y1="0" X2="0" Y2="-75">
+            <Line.RenderTransform>
+                <RotateTransform Angle="{Binding Path=AktualnyCzas, Mode=OneWay, Converter={StaticResource ResourceKey=wskazówkaGodzinowa}}"/>
+            </Line.RenderTransform>
+        </Line>
+        <Line Canvas.Left="250" Canvas.Top="210" StrokeThickness="3" X1="0" Y1="0" X2="0" Y2="-150">
+            <Line.RenderTransform>
+                <RotateTransform Angle="{Binding Path=AktualnyCzas, Mode=OneWay, Converter={StaticResource ResourceKey=wskazówkaMinutowa}}"/>
+            </Line.RenderTransform>
+        </Line>
+        <Line Canvas.Left="250" Canvas.Top="210" StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="-150">
+            <Line.RenderTransform>
+                <RotateTransform Angle="{Binding Path=AktualnyCzas, Mode=OneWay, Converter={StaticResource ResourceKey=wskazówkaSekundowa}}"/>
+            </Line.RenderTransform>
+        </Line>
+        <Ellipse Canvas.Left="245" Canvas.Top="205" Height="10" Width="10" Fill="Black">
+
+        </Ellipse>
+    </Canvas>
+</Window>
